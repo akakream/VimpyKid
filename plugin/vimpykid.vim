@@ -1,5 +1,5 @@
 " Vim global plugin for turning print statements into descriptive print statements for debugging purposes
-" Last Change:  2020 June 29
+" Last Change:  2020 July 1
 " Maintainer:   akakream <https://github.com/akakream>
 " License:      This file is placed in the public domain.
 
@@ -22,16 +22,15 @@ noremenu <script> Plugin.Fed\ Fstring      <SID>Fed
 
 noremap <SID>Fed  :call <SID>Fed(getline('.'))<CR>
 
-function s:Fed(str)
-    if a:str =~ "print("
-        echo "str contains print("
-    else
-        echo "string does not contain print("
+" TODO: Match the beginning of line with print( and end of line with )
+function s:Fed(line)
+    if a:line =~ "print("
+        let s:matchedStr = matchstr(a:line, '(.*)')
+        let s:subStr = substitute(a:line, '(.*)', '(f"' . s:matchedStr[2:-3] . ': ' . '{' . s:matchedStr[2:-3] . '}")', '')
+        exe "normal V R" . s:subStr
     endif
 endfunction 
 
-
 let &cpo = s:save_cpo
 unlet s:save_cpo
-
 
