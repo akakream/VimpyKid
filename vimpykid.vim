@@ -13,21 +13,25 @@ set cpo&vim
 
 "Turn print() statements into f-strings
 if !hasmapto('<Plug>VimpyKidFed')
-    map <unique> <Leader>a  <Plug>VimpyKidFed
+    map <unique> <Leader>fs  <Plug>VimpyKidFed
 endif
 
-map <unique> <Leader>fs  <Plug>VimpyKidFed <SID>Fed
+noremap <unique> <script> <Plug>VimpyKidFed  <SID>Fed
 
 noremenu <script> Plugin.Fed\ Fstring      <SID>Fed
 
 noremap <SID>Fed  :call <SID>Fed(getline('.'))<CR>
 
 function s:Fed(str)
-    if str =~ "print("
+    if a:str =~ "print("
         echo "str contains print("
+    else
+        echo "string does not contain print("
     endif
 endfunction 
 
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
+
+
