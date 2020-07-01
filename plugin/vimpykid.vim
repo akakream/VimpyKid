@@ -23,14 +23,16 @@ noremenu <script> Plugin.Fed\ Fstring      <SID>Fed
 noremap <SID>Fed  :call <SID>Fed(getline('.'))<CR>
 
 " TODO: Match the beginning of line with print( and end of line with )
+" TODO: If the line has string in it ignore
 function s:Fed(line)
     if a:line =~ "print("
         let s:matchedStr = matchstr(a:line, '(.*)')
-        let s:subStr = substitute(a:line, '(.*)', '(f"' . s:matchedStr[2:-3] . ': ' . '{' . s:matchedStr[2:-3] . '}")', '')
+        let s:subStr = substitute(a:line, '(.*)', '(f"' . s:matchedStr[1:-2] . ': ' . '{' . s:matchedStr[1:-2] . '}")', '')
         exe "normal V R" . s:subStr
     endif
 endfunction 
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
+
 
